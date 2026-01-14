@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config|
+  # Folosim o imagine stabilă de Ubuntu 22.04
+  config.vm.box = "ubuntu/jammy64"
+
+  # Configurație Hardware pentru VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Terraform-Manual-Lab"
+    vb.memory = "2048" # 2GB RAM sunt suficienți
+    vb.cpus = 2
+  end
+
+  # Mapare port pentru a putea vedea Nginx-ul din browser-ul de pe Windows mai târziu
+  # Accesăm localhost:8080 pe Windows și el trimite la portul 8080 din VM
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+
+  # Folder sincronizat: Fișierele din folderul curent de pe Windows 
+  # vor apărea în VM în /home/vagrant/proiect
+  config.vm.synced_folder ".", "/home/vagrant/proiect"
+end
